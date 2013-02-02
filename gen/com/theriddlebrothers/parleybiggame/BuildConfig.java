@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.theriddlebrothers.listenup;
+package com.theriddlebrothers.parleybiggame;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;

@@ -1,0 +1,11 @@
+<resources>
+    <color name="brand_primary">#01336b</color>
+    <color name="brand_secondary">#da2127</color>
+
+    <color name="primary_button">@color/brand_primary</color>
+    <color name="primary_button_active">@color/brand_primary</color>
+
+    <color name="list_bg">@color/brand_primary</color>
+    <color name="message_text">#ffffff</color>
+    <color name="details_text">#dedede</color>
+</resources>

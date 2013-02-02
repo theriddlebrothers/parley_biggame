@@ -1,18 +1,18 @@
-package com.theriddlebrothers.listenup;
+package com.theriddlebrothers.parleybiggame;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.*;
-import com.google.ads.AdActivity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -21,15 +21,17 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
 
+    private final String TAG = "MainActivity";
+
+    /**
+     * Tags used by this app to search twitter.
+     */
     private final String TWITTER_HASHTAGS = "SuperBowl,SuperBowl2013,SuperBowlXLVII,XLVII,49ers,Niners," +
             "SanFrancisco,SF,Ravens,QuestforSix,SBRavens,RavenNation,Baltimore,Bmore";
 
@@ -50,7 +52,6 @@ public class MainActivity extends Activity {
 
     private class MyTask extends AsyncTask<Void, Void, Void> {
 
-
         @Override
         protected Void doInBackground(Void... arg0) {
             try {
@@ -62,9 +63,9 @@ public class MainActivity extends Activity {
                 }
                 if (lastId != null && lastId.length() != 0) query += "&since_id=" + lastId;
 
+                // Search Twitter's public feed
                 String url = "http://search.twitter.com/search.json?q=" + query
                         + "&lang=en&result_type=recent&rpp=20";
-                Log.d("MAINVIEW", url);
                 HttpClient hc = new DefaultHttpClient();
                 HttpGet get = new
                         HttpGet(url);
@@ -91,7 +92,7 @@ public class MainActivity extends Activity {
                     }
                 }
             } catch (Exception e) {
-                Log.e("TwitterFeedActivity", "Error loading JSON", e);
+                Log.e(TAG, "Error loading JSON", e);
             }
             return null;
         }
@@ -144,73 +145,52 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_main, menu);
+        return true;
+    }
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.exit_menu_item:
+                finish();
+                System.exit(0);
+                return true;
+            case R.id.about_menu_item:
+                AlertDialog dialog = createAboutDialog();
+                dialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+    private AlertDialog createAboutDialog() {
+        // Use the Builder class for convenient dialog construction
+        LayoutInflater inflater = getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        View dialogView = inflater.inflate(R.layout.dialog_about, null);
+        builder.setView(dialogView)
+                .setNegativeButton(R.string.okay, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                        dialog.cancel();
+                    }
+                });
+
+        Button visitWebsite = (Button)dialogView.findViewById(R.id.visitWebsite);
+        visitWebsite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse(getString(R.string.url)) );
+                startActivity( browse );
             }
-            return mIcon11;
-        }
+        });
 
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
+        // Create the AlertDialog object and return it
+        return builder.create();
     }
-
-    private class Tweet {
-        public String id;
-        public Date dateCreated;
-        public String content;
-        public String author;
-        public String profileUrl;
-    }
-
-    private class TweetListAdapter extends ArrayAdapter<Tweet> {
-        private ArrayList<Tweet> tweets;
-        public TweetListAdapter(Context context,
-                                int textViewResourceId,
-                                ArrayList<Tweet> items) {
-            super(context, textViewResourceId, items);
-            this.tweets = items;
-        }
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View v = convertView;
-            if (v == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService
-                        (Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.list_item, null);
-            }
-
-            SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-
-            Tweet o = tweets.get(position);
-            TextView tt = (TextView) v.findViewById(R.id.top_text);
-            TextView bt = (TextView) v.findViewById(R.id.details_text);
-            ImageView iv = (ImageView) v.findViewById(R.id.list_image);
-            tt.setText(o.content);
-            bt.setText("@" + o.author + " at " + timeFormat.format(o.dateCreated)
-                            + " on " + dateFormat.format(o.dateCreated));
-
-            // download the user's profile image
-            new DownloadImageTask(iv)
-                    .execute(o.profileUrl);
-
-            return v;
-        }
-    }
-
 }

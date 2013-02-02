@@ -6,7 +6,7 @@
               android:layout_height="fill_parent"
               android:id="@+id/main_layout">
 
-    <com.theriddlebrothers.listenup.PullToRefreshListView
+    <com.theriddlebrothers.parleybiggame.PullToRefreshListView
             android:id="@+id/pull_to_refresh_listview"
             android:layout_width="fill_parent"
             android:dividerHeight="2px"
@@ -20,7 +20,7 @@
                            android:background="@android:color/black"
                            ads:background="@android:color/black"
                            ads:adUnitId="a1510c82672b83c"
-                           ads:adSize="BANNER"
+                           ads:adSize="SMART_BANNER"
                            ads:testDevices="TEST_EMULATOR, D50T-C2QP-W07B-X"
                            ads:loadAdOnCreate="true"/>
 </LinearLayout>
