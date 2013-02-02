@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="splash_horizontal_text">Parley: The Big Game XLVII</string>
+    <string name="splash_main_text">Parley</string>
+    <string name="splash_sub_text">The Big Game XLVII</string>
+
     <!-- Main Feed List-->
     <string name="app_name">Parley: The Big Game XLVII</string>
     <string name="ptr_pull_to_refresh">Pull to refresh</string>
