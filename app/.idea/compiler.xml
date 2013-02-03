@@ -4,6 +4,7 @@
     <option name="DEFAULT_COMPILER" value="Javac" />
     <excludeFromCompile>
       <directory url="file://$PROJECT_DIR$/gen" includeSubdirectories="true" />
+      <file url="file://$PROJECT_DIR$/AndroidManifest.xml" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
@@ -18,7 +19,11 @@
       <entry name="?*.tld" />
       <entry name="?*.ftl" />
     </wildcardResourcePatterns>
-    <annotationProcessing enabled="false" useClasspath="true" />
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
   </component>
 </project>
 
