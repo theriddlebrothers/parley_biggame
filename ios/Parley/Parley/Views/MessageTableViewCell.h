@@ -11,5 +11,7 @@
 @interface MessageTableViewCell : UITableViewCell
 
 @property (nonatomic) IBOutlet UILabel* messageLabel;
+@property (nonatomic) IBOutlet UILabel* detailsLabel;
+@property (nonatomic) IBOutlet UIImageView* profileImage;
 
 @end

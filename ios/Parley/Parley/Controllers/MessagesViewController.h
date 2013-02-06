@@ -10,4 +10,7 @@
 
 @interface MessagesViewController : UITableViewController
 
+@property (strong)NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableData *responseData;
+
 @end

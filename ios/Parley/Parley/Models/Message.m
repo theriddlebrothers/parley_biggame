@@ -11,11 +11,17 @@
 @implementation Message
 
 @synthesize message;
+@synthesize authorName;
+@synthesize dateCreated;
+@synthesize profileUrl;
 
--(id)initWithMessage:(NSString *)message {
+-(id)initWithDetails:(NSString *)inMessage authorName:(NSString *)inAuthorName dateCreated:(NSDate *)inDateCreated profileUrl:(NSString *)inProfileUrl {
     self = [super init];
     if (self) {
-        self.message = message;
+        self.message = inMessage;
+        self.authorName = inAuthorName;
+        self.dateCreated = inDateCreated;
+        self.profileUrl = inProfileUrl;
     }
     return self;
 }

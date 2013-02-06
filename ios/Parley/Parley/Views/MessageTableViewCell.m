@@ -11,6 +11,8 @@
 @implementation MessageTableViewCell
 
 @synthesize messageLabel;
+@synthesize detailsLabel;
+@synthesize profileImage;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
